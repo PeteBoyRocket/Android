@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
     private int currentBpm;
     private CountDownTimer countDownTimer;
     private ToneGenerator toneG;
+    private Button button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,70 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         timerTextView = (TextView) findViewById(R.id.info_message);
+        button = (Button) findViewById(R.id.stopStartButton);
 
+        InitialisePeriodNumberPicker();
+
+        InitialiseIncrementNumberPicker();
+
+        InitialiseStartNumberPicker();
+
+        InitialiseStopNumberPicker();
+
+        toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+    }
+
+    private void InitialiseStopNumberPicker() {
+        stopNumberPicker = (NumberPicker) findViewById(R.id.stop_NumberPicker);
+        InitialiseBpmNumberPicker(stopNumberPicker);
+
+        stopNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (newVal < startNumberPicker.getValue())
+                {
+                    startNumberPicker.setValue(newVal);
+                }
+            }
+        });
+    }
+
+    private void InitialiseStartNumberPicker() {
+        startNumberPicker = (NumberPicker) findViewById(R.id.start_NumberPicker);
+        InitialiseBpmNumberPicker(startNumberPicker);
+
+        startNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (newVal > stopNumberPicker.getValue())
+                {
+                    stopNumberPicker.setValue(newVal);
+                }
+            }
+        });
+    }
+
+    private void InitialiseBpmNumberPicker(NumberPicker numberPicker) {
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(24);
+
+        String[] startValues = new String[25];
+        for(int i=0; i < startValues.length; i++){
+            startValues[i]= Integer.toString((i + 1)*5 + 35);
+        }
+
+        numberPicker.setDisplayedValues(startValues);
+        numberPicker.setValue(5);
+    }
+
+    private void InitialiseIncrementNumberPicker() {
+        incrementNumberPicker = (NumberPicker) findViewById(R.id.increment_NumberPicker);
+        incrementNumberPicker.setMinValue(1);
+        incrementNumberPicker.setMaxValue(30);
+        incrementNumberPicker.setValue(15);
+    }
+
+    private void InitialisePeriodNumberPicker() {
         periodNumberPicker = (NumberPicker) findViewById(R.id.period_NumberPicker);
         periodNumberPicker.setMinValue(0);
         periodNumberPicker.setMaxValue(24);
@@ -48,37 +112,6 @@ public class MainActivity extends Activity {
 
         periodNumberPicker.setDisplayedValues(values);
         periodNumberPicker.setValue(5);
-
-        incrementNumberPicker = (NumberPicker) findViewById(R.id.increment_NumberPicker);
-        incrementNumberPicker.setMinValue(1);
-        incrementNumberPicker.setMaxValue(30);
-        incrementNumberPicker.setValue(15);
-
-        startNumberPicker = (NumberPicker) findViewById(R.id.start_NumberPicker);
-        startNumberPicker.setMinValue(0);
-        startNumberPicker.setMaxValue(24);
-
-        String[] startValues = new String[25];
-        for(int i=0; i < startValues.length; i++){
-            startValues[i]=Integer.toString((i + 1)*5);
-        }
-
-        startNumberPicker.setDisplayedValues(startValues);
-        startNumberPicker.setValue(5);
-
-        stopNumberPicker = (NumberPicker) findViewById(R.id.stop_NumberPicker);
-        stopNumberPicker.setMinValue(0);
-        stopNumberPicker.setMaxValue(24);
-
-        String[] stopValues = new String[25];
-        for(int i=0; i < stopValues.length; i++){
-            stopValues[i]=Integer.toString((i + 1)*5);
-        }
-
-        stopNumberPicker.setDisplayedValues(stopValues);
-        stopNumberPicker.setValue(5);
-
-        toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
     }
 
     @Override
@@ -101,21 +134,20 @@ public class MainActivity extends Activity {
     }
 
     public void timerStopStart(View view) {
-        Button b = (Button) view;
 
-        if (b.getText().equals("stop")) {
-            b.setText("start");
+        if (button.getText().equals("stop")) {
+            button.setText("start");
 
             countDownTimer.cancel();
             return;
         }
 
-        b.setText("stop");
+        button.setText("stop");
 
         period = (periodNumberPicker.getValue() + 1) * 5000;
-        currentBpm = (startNumberPicker.getValue() + 1) * 5;
+        currentBpm = (startNumberPicker.getValue() + 1) * 5 + 35;
         currentMSecTick = 60000 / currentBpm;
-        endBpm = (stopNumberPicker.getValue() + 1) * 5;
+        endBpm = (stopNumberPicker.getValue() + 1) * 5 + 35;
         increment = incrementNumberPicker.getValue();
 
         StartTimer();
@@ -141,6 +173,7 @@ public class MainActivity extends Activity {
 
                 if (currentBpm > endBpm) {
                     timerTextView.setText("done!");
+                    button.setText("start");
                     return;
                 }
 
