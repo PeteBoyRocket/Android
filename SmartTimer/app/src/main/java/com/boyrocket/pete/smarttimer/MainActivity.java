@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 
         InitialiseStopNumberPicker();
 
-        toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+        toneG = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
     }
 
     private void InitialiseStopNumberPicker() {
