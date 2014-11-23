@@ -116,14 +116,14 @@ public class MainActivity extends Activity {
 
     public void timerStopStart(View view) {
 
-        if (button.getText().equals("stop")) {
-            button.setText("start");
+        if (button.getText().equals("Stop")) {
+            button.setText("Start");
 
             countDownTimer.cancel();
             return;
         }
 
-        button.setText("stop");
+        button.setText("Stop");
 
         period = (periodNumberPicker.getValue() + 1) * 5000;
         currentBpm = (startNumberPicker.getValue() + 1) * 5 + 35;

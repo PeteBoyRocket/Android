@@ -7,8 +7,8 @@ android {
         applicationId "com.boyrocket.pete.smarttimer"
         minSdkVersion 19
         targetSdkVersion 20
-        versionName '1.21'
-        versionCode 4
+        versionName '1.22'
+        versionCode 5
     }
     buildTypes {
         release {
