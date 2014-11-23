@@ -105,13 +105,22 @@ public class MainActivity extends Activity {
         periodNumberPicker.setMinValue(0);
         periodNumberPicker.setMaxValue(24);
 
-        String[] values = new String[25];
-        for(int i=0; i < values.length; i++){
+        String[] values = new String[26];
+        for(int i=0; i < values.length - 1; i++){
             values[i]=Integer.toString((i + 1)*5);
         }
 
+        values[26] = "∞";
+
         periodNumberPicker.setDisplayedValues(values);
         periodNumberPicker.setValue(5);
+
+        periodNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+            }
+        });
     }
 
     public void timerStopStart(View view) {
@@ -125,7 +134,13 @@ public class MainActivity extends Activity {
 
         button.setText("Stop");
 
-        period = (periodNumberPicker.getValue() + 1) * 5000;
+        int periodValue = periodNumberPicker.getValue();
+        if(periodValue == 25) {
+            period = Integer.MAX_VALUE;
+        }else {
+            period = (periodValue + 1) * 5000;
+        }
+
         currentBpm = (startNumberPicker.getValue() + 1) * 5 + 35;
         currentMSecTick = 60000 / currentBpm;
         endBpm = (stopNumberPicker.getValue() + 1) * 5 + 35;
