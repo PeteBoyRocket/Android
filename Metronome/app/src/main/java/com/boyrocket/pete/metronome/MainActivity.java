@@ -38,13 +38,13 @@ public class MainActivity extends Activity {
         timerTextView = (TextView) findViewById(R.id.info_message);
         button = (Button) findViewById(R.id.stopStartButton);
 
-        //InitialisePeriodNumberPicker();
+        InitialisePeriodNumberPicker();
 
-        //InitialiseIncrementNumberPicker();
+        InitialiseIncrementNumberPicker();
 
-       // InitialiseStartNumberPicker();
+        InitialiseStartNumberPicker();
 
-       // InitialiseStopNumberPicker();
+        InitialiseStopNumberPicker();
 
         toneG = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
     }
@@ -102,14 +102,14 @@ public class MainActivity extends Activity {
     private void InitialisePeriodNumberPicker() {
         periodNumberPicker = (NumberPicker) findViewById(R.id.period_NumberPicker);
         periodNumberPicker.setMinValue(0);
-        periodNumberPicker.setMaxValue(24);
+        periodNumberPicker.setMaxValue(25);
 
         String[] values = new String[26];
         for(int i=0; i < values.length - 1; i++){
             values[i]=Integer.toString((i + 1)*5);
         }
 
-        values[26] = "∞";
+        values[25] = "∞";
 
         periodNumberPicker.setDisplayedValues(values);
         periodNumberPicker.setValue(5);
