@@ -32,6 +32,7 @@ tools:context=".MainActivity">
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/increment_Layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -59,6 +60,7 @@ tools:context=".MainActivity">
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/start_TextView"
             android:text="@string/startBpm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +71,7 @@ tools:context=".MainActivity">
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/stop_Layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

@@ -5,22 +5,26 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import java.util.Timer;
 
 public class MainActivity extends Activity {
 
     NumberPicker periodNumberPicker;
+
+    LinearLayout incrementLayout;
     NumberPicker incrementNumberPicker;
+
+    TextView startTextView;
     NumberPicker startNumberPicker;
+
+    LinearLayout stopLayout;
     NumberPicker stopNumberPicker;
     TextView timerTextView;
+
     private int currentMSecTick;
     private int endBpm;
     private int increment;
@@ -29,6 +33,7 @@ public class MainActivity extends Activity {
     private CountDownTimer countDownTimer;
     private ToneGenerator toneG;
     private Button button;
+    private String infinitySymbol = "∞";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,10 +45,13 @@ public class MainActivity extends Activity {
 
         InitialisePeriodNumberPicker();
 
+        incrementLayout = (LinearLayout) findViewById(R.id.increment_Layout);
         InitialiseIncrementNumberPicker();
 
+        startTextView = (TextView) findViewById(R.id.start_TextView);
         InitialiseStartNumberPicker();
 
+        stopLayout = (LinearLayout) findViewById(R.id.stop_Layout);
         InitialiseStopNumberPicker();
 
         toneG = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
@@ -109,7 +117,7 @@ public class MainActivity extends Activity {
             values[i]=Integer.toString((i + 1)*5);
         }
 
-        values[25] = "∞";
+        values[25] = infinitySymbol;
 
         periodNumberPicker.setDisplayedValues(values);
         periodNumberPicker.setValue(5);
@@ -117,9 +125,28 @@ public class MainActivity extends Activity {
         periodNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
+                if (newVal == 25)
+                {
+                    SetInfinitePeriodView();
+                }
+                else
+                {
+                    SetStandardPeriodView();
+                }
             }
         });
+    }
+
+    private void SetInfinitePeriodView() {
+        incrementLayout.setVisibility(View.GONE);
+        stopLayout.setVisibility(View.GONE);
+        startTextView.setText(R.string.Bpm);
+    }
+
+    private void SetStandardPeriodView() {
+        incrementLayout.setVisibility(View.VISIBLE);
+        stopLayout.setVisibility(View.VISIBLE);
+        startTextView.setText(R.string.startBpm);
     }
 
     public void timerStopStart(View view) {
@@ -181,7 +208,7 @@ public class MainActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        //  timerHandler.removeCallbacks(timerRunnable);
+
         Button b = (Button) findViewById(R.id.stopStartButton);
         b.setText("start");
     }

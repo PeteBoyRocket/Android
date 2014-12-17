@@ -9,5 +9,6 @@
     <string name="increment">Increment</string>
     <string name="stopBpm">Stop BPM</string>
     <string name="start">Start</string>
+    <string name="Bpm">BPM</string>
 
 </resources>
