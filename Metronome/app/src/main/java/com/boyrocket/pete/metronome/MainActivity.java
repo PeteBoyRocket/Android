@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
                 {
                     SetInfinitePeriodView();
                 }
-                else
+                else if (oldVal == 25)
                 {
                     SetStandardPeriodView();
                 }
@@ -138,14 +138,14 @@ public class MainActivity extends Activity {
     }
 
     private void SetInfinitePeriodView() {
-        incrementLayout.setVisibility(View.GONE);
-        stopLayout.setVisibility(View.GONE);
+        AnimationHelper.collapseHorizontally(incrementLayout);
+        AnimationHelper.collapseHorizontally(stopLayout);
         startTextView.setText(R.string.Bpm);
     }
 
     private void SetStandardPeriodView() {
-        incrementLayout.setVisibility(View.VISIBLE);
-        stopLayout.setVisibility(View.VISIBLE);
+        AnimationHelper.expandHorizontally(incrementLayout);
+        AnimationHelper.expandHorizontally(stopLayout);
         startTextView.setText(R.string.startBpm);
     }
 
